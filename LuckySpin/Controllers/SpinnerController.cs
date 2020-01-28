@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using LuckySpin.Models;
+using LuckySpin.ViewModels;
 
 namespace LuckySpin.Controllers
 {
@@ -15,11 +16,11 @@ namespace LuckySpin.Controllers
         /***
          * Controller Constructor
          */
-        public SpinnerController()
+        public SpinnerController(Repository repos)
         {
             random = new Random();
             //TODO: Inject the Repository singleton
-            repository = new Repository();
+            repository = repos;
         }
 
         /***
@@ -36,9 +37,9 @@ namespace LuckySpin.Controllers
             if (!ModelState.IsValid) { return View(); }
 
             // TODO: Add the Player to the Repository
-
+            repository.CurrentPlayer = new Player();
             // TODO: Build a new SpinItViewModel object with data from the Player and pass it to the View
-
+            SpinItViewModel SpinIt = new SpinItViewModel();
             return RedirectToAction("SpinIt", player); 
         }
 
@@ -64,7 +65,7 @@ namespace LuckySpin.Controllers
             ViewBag.ImgDisplay = (spin.IsWinning) ? "block" : "none";
             ViewBag.FirstName = player.FirstName;
             ViewBag.Balance = player.Balance;
-
+            player.ChargeSpin();
             return View("SpinIt", spin);
         }
 

@@ -4,8 +4,8 @@ namespace LuckySpin.Models
 {
     public class Repository
     {
+        public Player CurrentPlayer = new Player();
         private List<Spin> spins = new List<Spin>();
-
        //Property
        public IEnumerable<Spin> PlayerSpins {
 
